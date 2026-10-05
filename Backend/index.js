@@ -2,7 +2,7 @@ const express = require("express") ;
 const app = express() ; 
 require("dotenv").config()
 const db = require("./src/config/db_config");
-const { DoctorRouter } = require("./src/routes/app");
+const { DoctorRouter, AdminRouter } = require("./src/routes/app");
 
 db() ; 
 
@@ -20,7 +20,8 @@ app.use(express.json());
 //     next();
 // });
 
-app.use("/doctorapp" , DoctorRouter) ; 
+app.use("/doctor" , DoctorRouter) ; // catching all routes related to doctor 
+app.use("/admin", AdminRouter); // catching all routes related to admin
 
 app.listen(process.env.PORT,()=>{
     console.log(`server runs on ${process.env.PORT}`)
