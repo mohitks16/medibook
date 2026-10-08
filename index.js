@@ -19,6 +19,9 @@ app.use("/doctor" , DoctorRouter) ; // catching all routes related to doctor
 app.use("/admin", AdminRouter); // catching all routes related to admin
 
 // app.use("/doctor/doctorApplication/apply",upload.single("credentialDocument") ,  submitDoctorApplication);
+app.get("/ping", (req, res) => {
+    res.status(200).json({ status: "Server is alive!" });
+});
 
 app.listen(process.env.PORT,()=>{
     console.log(`server runs on ${process.env.PORT}`)
