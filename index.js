@@ -1,10 +1,18 @@
 const express = require("express") ; 
 const app = express() ; 
+const cors = require("cors");
 require("dotenv").config()
 const db = require("./src/config/db_config");
 const { DoctorRouter, AdminRouter } = require("./src/routes/app");
 const { submitDoctorApplication } = require("./src/controller/ApplicationController/DoctorsController/DoctorApplicationController");
 const upload = require("./src/middleware/uploadMiddleware");
+
+// after app is created
+app.use(cors()); // This allows your frontend to talk to your backend locally
+
+
+console.log(process.env.PORT) ;
+
 
 db() ; 
 

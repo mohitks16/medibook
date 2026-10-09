@@ -1,9 +1,22 @@
+ details about the folder structures --> 
 
-</file_summary>
+
+1. config folder is for configuration files of db , razorpay or any other third party service we will use 
+
+2. controller will have all the controller fuction separate controller folder for admin and separate for the application (further to better organize the work application have doctor and patient controllers separately )
+
+3. middleware folder will have all the middleware files related to authentication , multer etc whatever more middlewares we will set up in future 
+
+4. models to write the schemas separate models folder for admin and separate for the application (further to better organize the work application have doctor and patient models separately )
+
+5. routes folder follows the similar pattern , and there is also a app.js , all the routes file that will come in admin , user , doctor will have the endpoints related to them while , app.js is where all the routes will be registered for different modules for all three of them 
+
+6. index.js is going to be the main file . 
 
 <directory_structure>
 src/
   config/
+    cloudinaryConfig.js
     db_config.js
     doctorCredentials.js
   controller/
@@ -43,13 +56,6 @@ src/
         userRoutes.js
     app.js
   folderGuide.md
-uploads/
-  08404f2b00551f9e75a1a27ab8bc12b1
-  17ad01956e331efb9df3db7faf478fdc
-  6b163f42fc5393277a1dd0092373be44
-  6e4f9be5794750d5148ec6fddc151bee
-  888c2098c179a35b74c8d33515b9d1dc
-  acd180144dd28710f91a5cf082425e40
 .gitignore
 index.js
 package.json
@@ -57,6 +63,18 @@ package.json
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path="src/config/cloudinaryConfig.js">
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+module.exports = cloudinary;
+</file>
 
 <file path="src/config/db_config.js">
 const mongoose = require("mongoose")
@@ -408,16 +426,6 @@ module.exports = doctorAuthMiddleware;
 
 </file>
 
-<file path="src/middleware/uploadMiddleware.js">
-const multer = require("multer");
-
-const upload = multer({
-    dest: "uploads/",
-});
-
-module.exports = upload;
-</file>
-
 <file path="src/models/AdminModels/Admin.js">
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -757,12 +765,32 @@ package.json
 6. index.js is going to be the main file .
 </file>
 
+<file path="src/middleware/uploadMiddleware.js">
+const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinaryConfig");
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "doctor_credentials",
+        allowed_formats: ["jpg", "png", "jpeg", "pdf"],
+    },
+});
+
+const upload = multer({ storage: storage });
+
+module.exports = upload;
+</file>
+
 <file path=".gitignore">
 # Dependencies
 node_modules/
 
 # Environment variables
 .env
+
+uploads/
 </file>
 
 <file path="index.js">
@@ -787,6 +815,9 @@ app.use("/doctor" , DoctorRouter) ; // catching all routes related to doctor
 app.use("/admin", AdminRouter); // catching all routes related to admin
 
 // app.use("/doctor/doctorApplication/apply",upload.single("credentialDocument") ,  submitDoctorApplication);
+app.get("/ping", (req, res) => {
+    res.status(200).json({ status: "Server is alive!" });
+});
 
 app.listen(process.env.PORT,()=>{
     console.log(`server runs on ${process.env.PORT}`)
@@ -799,6 +830,7 @@ app.listen(process.env.PORT,()=>{
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -807,12 +839,14 @@ app.listen(process.env.PORT,()=>{
   "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.11.0",
     "cors": "^2.8.6",
     "dotenv": "^18.0.5",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.10.4",
-    "multer": "^2.4.0"
+    "multer": "^2.4.0",
+    "multer-storage-cloudinary": "^4.0.0"
   }
 }
 </file>
