@@ -1,0 +1,31 @@
+name: Node.js CI Pipeline
+
+# ⚡ Trigger the workflow on pushes or pull requests to main/master branches
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Clone the repository code onto the GitHub runner server
+    - name: Checkout repository code
+      uses: actions/checkout@v4
+
+    # 2. Set up the correct version of Node.js (FIXED: changed checkout to setup-node)
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Match your local Node version
+
+    # 3. Install packages using your exact package-lock.json
+    - name: Install dependencies
+      run: npm ci --legacy-peer-deps
+
+    # 4. Run the Jest tests
+    - name: Run test suite
+      run: npm test
