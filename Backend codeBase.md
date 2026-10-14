@@ -1,4 +1,5 @@
 <directory_structure>
+node_modules/
 src/
   config/
     cloudinaryConfig.js
@@ -46,6 +47,9 @@ backend code base  .md
 index.js
 package.json
 </directory_structure>
+
+
+
 
 <files>
 This section contains the contents of the repository's files.
