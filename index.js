@@ -11,14 +11,14 @@ const upload = require("./src/middleware/uploadMiddleware");
 app.use(cors()); // This allows your frontend to talk to your backend locally
 
 
-console.log(process.env.PORT) ;
+// console.log(process.env.PORT) ;
 
 
 db() ; 
 
 
 
-console.log(process.env.PORT) ; 
+// console.log(process.env.PORT) ; 
 
 app.use(express.json());
 

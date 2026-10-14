@@ -5,3 +5,7 @@ node_modules/
 .env
 
 uploads/
+
+GEMINI.md
+folderGuide.node_modules
+Backend codebase .md
