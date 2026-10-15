@@ -8,4 +8,5 @@ doctorRouter.post("/add-slots", doctorAuthMiddleware, addSlot);
 doctorRouter.get("/get-slots", doctorAuthMiddleware, getMySlots);
 doctorRouter.delete("/delete-slots/:slotId", doctorAuthMiddleware, deleteSlot);
 
+
 module.exports = doctorRouter;
