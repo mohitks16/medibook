@@ -3,12 +3,14 @@ const { submitDoctorApplication } = require("../../../controller/ApplicationCont
 const upload = require("../../../middleware/uploadMiddleware");
 const { doctorLogin } = require("../../../controller/ApplicationController/DoctorsController/DoctorAuthController");
 const doctorAuthMiddleware = require("../../../middleware/doctorAuthMiddleware");
-const { getDoctorProfile } = require("../../../controller/ApplicationController/DoctorsController/DoctorProfileController");
+const { getDoctorProfile, updateDoctorProfile } = require("../../../controller/ApplicationController/DoctorsController/DoctorProfileController");
 
 const DoctorApplicationRouter = express.Router();
 
 DoctorApplicationRouter.post("/apply", upload.single("credentialDocument"), submitDoctorApplication);
 DoctorApplicationRouter.post("/login", doctorLogin);
+DoctorApplicationRouter.patch("/update-profile", doctorAuthMiddleware, updateDoctorProfile);
+
 
 // DoctorApplicationRouter.get("/profile-test", doctorAuthMiddleware, (req, res) => {
 //     res.status(200).json({
