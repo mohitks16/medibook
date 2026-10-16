@@ -48,7 +48,7 @@ describe("PatientAuthController Tests", () => {
     // =========================================================================
     describe("requestSignupOtp Tests", () => {
         it("should return status 400 if required fields are missing", async () => {
-            // Provide incomplete body (missing fullName)
+            // Provide incomplete body (missing fullNames)
             req.body = {
                 email: "patient@example.com",
                 phoneNumber: "1234567890"
