@@ -37,6 +37,7 @@ const doctorAuthMiddleware = (req, res, next) => {
             message: "Invalid or expired token",
         });
     }
+    // initial commit 
 };
 
 module.exports = doctorAuthMiddleware;
