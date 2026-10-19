@@ -40,6 +40,8 @@ const getPatientProfile = async (req, res) => {
  */
 const updatePatientProfile = async (req, res) => {
     try {
+
+
         const patientId = req.patient.patientId;
         const {
             fullName,
@@ -73,16 +75,27 @@ const updatePatientProfile = async (req, res) => {
             }
             updateData.phoneNumber = phoneNumber.trim();
         }
-        
-        if(dateOfBirth !== undefined){
-        const parsedDate = new Date(dateOfBirth);
-        updateData.dateOfBirth = parsedDate;
-        } ; 
+
+        if (dateOfBirth !== undefined) {
+            if (dateOfBirth === "" || dateOfBirth === null) {
+                // Explicitly clear DOB
+                updateData.dateOfBirth = null;
+            } else {
+                const parsedDate = new Date(dateOfBirth);
+                if (isNaN(parsedDate.getTime())) {
+                    return res.status(400).json({
+                        message: "Invalid date format",
+                    });
+                }
+                updateData.dateOfBirth = parsedDate;
+            }
+        }
+
 
         // Validate gender if provided
         if (gender !== undefined) {
             const validGenders = ["male", "female", "other", "", null];
-            
+
             if (!validGenders.includes(gender)) {
                 return res.status(400).json({
                     message: "Gender must be one of [male, female, other] or empty/null",
@@ -124,9 +137,13 @@ const updatePatientProfile = async (req, res) => {
 
         // Validate medicalHistory if provided
         if (medicalHistory !== undefined) {
+
             if (typeof medicalHistory !== "string") {
+
                 return res.status(400).json({
+
                     message: "Medical history must be a string",
+
                 });
             }
             updateData.medicalHistory = medicalHistory;
@@ -139,11 +156,14 @@ const updatePatientProfile = async (req, res) => {
             });
         }
 
+        console.log("Update Data is ", updateData)
+
+
         // Use Patient.findByIdAndUpdate to update profile
         const patient = await Patient.findByIdAndUpdate(
             patientId,
             { $set: updateData },
-            { new: true, runValidators: true }
+            { returnDocument: 'after', runValidators: true } // Updated here
         );
 
         if (!patient) {
@@ -157,6 +177,7 @@ const updatePatientProfile = async (req, res) => {
             patient,
         });
     } catch (error) {
+        console.log("Error is ", error)
         return res.status(500).json({
             message: "Failed to update patient profile",
             error: error.message,
@@ -164,7 +185,50 @@ const updatePatientProfile = async (req, res) => {
     }
 };
 
+
+const uploadPatientProfilePicture = async (req, res) => {
+
+    try {
+
+        // console.log("api is hitting" , req)
+
+        const patientId = req.patient.patientId;
+        const UserProfile = await Patient.findById(patientId);
+
+        if (!UserProfile) {
+            return res.status(404).json({
+                message: "Patient profile not found",
+            });
+        }
+
+        const profilePicturepath = req.file ? req.file.path : null;
+
+        if (!profilePicturepath) {
+            return res.status(400).json({
+                message: "Please upload a file",
+            });
+        }
+
+        UserProfile.profilePicture = profilePicturepath;
+        await UserProfile.save();
+
+        res.status(200).json({
+            message: "uploaded successfully",
+            // patient,
+        });
+    }
+
+    catch (error) {
+        return res.status(500).json({
+            message: "Failed to upload profile picture ",
+            error: error.message,
+        });
+    }
+
+}
+
 module.exports = {
     getPatientProfile,
     updatePatientProfile,
+    uploadPatientProfilePicture
 };
