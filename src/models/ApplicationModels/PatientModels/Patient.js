@@ -39,6 +39,24 @@ const patientSchema = new mongoose.Schema(
             type: String,
             default: "",
         },
+
+        // Blood group of the patient (optional, no default so validation allows undefined when not set)
+        bloodGroup: {
+            type: String,
+            enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+        },
+
+        // Freeform text containing any patient allergies
+        allergies: {
+            type: String,
+            default: "",
+        },
+
+        // Freeform text containing patient medical history
+        medicalHistory: {
+            type: String,
+            default: "",
+        },
     },
     {
         timestamps: true,
