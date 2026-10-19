@@ -201,7 +201,7 @@ const uploadPatientProfilePicture = async (req, res) => {
             });
         }
 
-        const profilePicturepath = req.file ? req.file.path : null;
+        const profilePicturepath = req.file ? req.file.path : null
 
         if (!profilePicturepath) {
             return res.status(400).json({
