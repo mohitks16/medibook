@@ -3,6 +3,7 @@ const { requestSignupOtp, verifySignupOtp, requestLoginOtp, verifyLoginOtp } = r
 const { getPatientProfile, updatePatientProfile, uploadPatientProfilePicture } = require("../../../controller/ApplicationController/UsersController/PatientProfileController");
 const patientAuthMiddleware = require("../../../middleware/patientAuthMiddleware");
 const uploadPatientProfilemiddleware = require("../../../middleware/uploadPatientProfileMiddleware");
+const { getAllDoctors, getDoctorDetail } = require("../../../controller/ApplicationController/UsersController/DoctorDiscoveryController");
 
 const PatientRouter = express.Router();
 
@@ -14,5 +15,7 @@ PatientRouter.get("/get-profile", patientAuthMiddleware, getPatientProfile);
 PatientRouter.patch("/update-profile", patientAuthMiddleware, updatePatientProfile);
 // uploadPatientProfilemiddleware.single("profilePicture") ,
 PatientRouter.post("/upload-profile-picture", patientAuthMiddleware ,uploadPatientProfilemiddleware.single("profilePicture"),  uploadPatientProfilePicture);
+PatientRouter.get("/get-doctors", patientAuthMiddleware, getAllDoctors);
+PatientRouter.get("/get-doctor-detail/:doctorId", patientAuthMiddleware, getDoctorDetail);
 
 module.exports = PatientRouter;

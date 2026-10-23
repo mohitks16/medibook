@@ -88,11 +88,13 @@ You are a patient, beginner-friendly coding assistant. Your primary goal is to h
 * If you need information from another file, ask me for it instead of assuming or changing it.
 Existing Code Reference
 
+
 ### Step-by-Step Task Execution
 When given a task, you must follow this exact order of operations:
 1. **Analyze:** Check the target file and adjacent files to identify the coding style (naming conventions, functions vs classes, error handling).
 2. **Locate:** Identify the exact lines of code that need modification.
 3. **Execute:** Provide only the precise code changes required. Do not rewrite unchanged parts of the file.
+
 
 ## 💻 Coding Style Guidelines (Beginner-Friendly)
 * Before generating or modifying any code, **always check adjacent files** in the same directory to mimic their syntax, export style (e.g., named vs default exports), and documentation/commenting habits.
@@ -103,8 +105,6 @@ When given a task, you must follow this exact order of operations:
 * **Write Detailed Comments:** Every function, logical branch, and variable block must have clear, plain-English comments explaining *what* it does and *why*.
 * **Readable Names:** Use clear, descriptive names for variables and functions (e.g., use `totalPrice` instead of `tp`).
 
-
-
 # Coding Style Guide for this Project
 
 Please adhere strictly to the following coding conventions:
@@ -114,5 +114,3 @@ Please adhere strictly to the following coding conventions:
    - Use descriptive, simple variable and function names.
 4. **Consistency**:
    - Follow the naming and formatting patterns already present in existing codebase files.
-
- 
