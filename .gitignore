@@ -7,4 +7,5 @@ node_modules/
 uploads/
 
 folderGuide.node_modules
-Backend codebase .md
+backend-codebase.md
+GEMINI.md
