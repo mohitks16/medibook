@@ -11,6 +11,8 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+console.log("[MAILER] Starting SMTP verification");
+
 transporter.verify((error, success) => {
     if (error) {
         console.error("[MAILER] VERIFY ERROR:", error);
