@@ -8,13 +8,20 @@ require("dotenv").config();
 
 const requestSignupOtp = async (req, res) => {
     try {
+
+        console.log("[OTP] Request received");
+
         const { fullName, email, phoneNumber } = req.body;
+
+        console.log("[OTP] Patient lookup completed");
 
         if (!fullName || !email || !phoneNumber) {
             return res.status(400).json({
                 message: "Full name, email and phone number are required",
             });
         }
+
+        
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -32,14 +39,20 @@ const requestSignupOtp = async (req, res) => {
 
         const existingPatient = await Patient.findOne({ email });
 
+        console.log("[OTP] Patient lookup completed");
+
         if (existingPatient) {
             return res.status(409).json({
                 message: "Email already registered, please login",
             });
         }
 
+
+
         const otp = generateOtp();
         const expiresAt = getOtpExpiry();
+
+        console.log("[OTP] OTP generated");
 
         // Delete any existing OTP verification records for the same email and purpose (signup)
         // This is to prevent duplicate OTP verification records from being created
@@ -47,6 +60,8 @@ const requestSignupOtp = async (req, res) => {
             identifier: email,
             purpose: "signup",
         });
+
+        console.log("[OTP] Previous OTPs deleted");
 
         await OtpVerification.create({
             identifier: email,
@@ -58,13 +73,22 @@ const requestSignupOtp = async (req, res) => {
             tempPhoneNumber: phoneNumber,
         });
 
+        console.log("[OTP] OTP record created");
+
+        console.log("[OTP] About to send email");
+
         await sendOtpEmail(email, otp, "signup");
+
+        console.log("[OTP] Email sent successfully");
 
         res.status(200).json({
             message: "OTP sent to your email",
         });
     } catch (error) {
+        console.error("[OTP] ERROR:", error);
+        
         res.status(500).json({
+            
             message: "Failed to send signup OTP",
             error: error.message,
         });
