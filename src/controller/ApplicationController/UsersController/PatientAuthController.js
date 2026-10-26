@@ -1,8 +1,10 @@
 const Patient = require("../../../models/ApplicationModels/PatientModels/Patient");
 const OtpVerification = require("../../../models/ApplicationModels/PatientModels/OtpVerification");
 const { generateOtp, getOtpExpiry } = require("../../../config/otpUtils");
-const { sendOtpEmail } = require("../../../services/emailService");
+// const { sendOtpEmail } = require("../../../services/ResendemailService");
+
 const jwt = require("jsonwebtoken");
+const { sendOtpEmail } = require("../../../services/stmpEmailService");
 require("dotenv").config();
 
 
@@ -47,8 +49,6 @@ const requestSignupOtp = async (req, res) => {
             });
         }
 
-
-
         const otp = generateOtp();
         const expiresAt = getOtpExpiry();
 
@@ -73,13 +73,8 @@ const requestSignupOtp = async (req, res) => {
             tempPhoneNumber: phoneNumber,
         });
 
-        console.log("[OTP] OTP record created");
-
-        console.log("[OTP] About to send email");
-
         await sendOtpEmail(email, otp, "signup");
 
-        console.log("[OTP] Email sent successfully");
 
         res.status(200).json({
             message: "OTP sent to your email",
