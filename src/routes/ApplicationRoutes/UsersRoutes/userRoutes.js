@@ -4,7 +4,7 @@ const { getPatientProfile, updatePatientProfile, uploadPatientProfilePicture } =
 const patientAuthMiddleware = require("../../../middleware/patientAuthMiddleware");
 const uploadPatientProfilemiddleware = require("../../../middleware/uploadPatientProfileMiddleware");
 const { getAllDoctors, getDoctorDetail } = require("../../../controller/ApplicationController/UsersController/DoctorDiscoveryController");
-const { createAppointment, getSlotById } = require("../../../controller/ApplicationController/UsersController/AppointmentController");
+const { getSlotById, createOrder, verifyPayment } = require("../../../controller/ApplicationController/UsersController/AppointmentController");
 
 const PatientRouter = express.Router();
 
@@ -28,8 +28,9 @@ PatientRouter.get("/get-doctor-detail/:doctorId", patientAuthMiddleware, getDoct
 
 // Appointments routes
 
-PatientRouter.post("/appointments/create", patientAuthMiddleware, createAppointment);
+PatientRouter.post("/appointments/create-order", patientAuthMiddleware, createOrder );
 PatientRouter.get("/appointments/get-slot-by-id/:slotId", patientAuthMiddleware, getSlotById);
+PatientRouter.post("/appointments/verify-payment", patientAuthMiddleware, verifyPayment);
 
 
 

@@ -22,22 +22,24 @@ const appointmentSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Slot",
             required: true,
-            unique: true,
         },
 
         // Date of the appointment copied from the slot ("YYYY-MM-DD")
+
         date: {
             type: String,
             required: true,
         },
 
         // Time of the appointment copied from the slot ("10:00 AM")
+
         time: {
             type: String,
             required: true,
         },
 
         // Consultation fee charged by the doctor
+
         consultationFee: {
             type: Number,
             required: true,
@@ -74,6 +76,10 @@ const appointmentSchema = new mongoose.Schema(
             type: String,
             default: "",
         },
+        razorpayOrderId: {
+            type: String, 
+            default: "",
+        }
     },
     {
         timestamps: true,
