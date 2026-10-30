@@ -171,7 +171,7 @@ const getSlotById = async (req, res) => {
         if (!slot) {
 
             return res.status(404).json({ message: "Slot not found" });
-
+            
         }
 
         return res.status(200).json({ message: "Slot fetched", slot });
